@@ -3,7 +3,7 @@ django-first-app
 
 This project is based on "[Writing your first Django app](https://docs.djangoproject.com/en/dev/intro/tutorial01/)"
 
-#### Instructions
+## Instructions
 
 1. Install [Pip](http://www.pip-installer.org/en/latest/installing.html) and with pip:
 	
@@ -13,14 +13,14 @@ This project is based on "[Writing your first Django app](https://docs.djangopro
 
 3. Now, open a Web browser and go to “/admin/” on your local domain – e.g., `http://127.0.0.1:8000/admin/`. You should see the admin’s login.
 
-	`Username: admin
-	Password: admin`
+	`Username: admin`
+	`Password: admin`
 
 4. Open a Web browser and go to “/polls/” on your local domain – e.g., `http://127.0.0.1:8000/polls/`. You should see that the question links.
 
 Tags: Python + Django + Bootstrap + Sqllite
 
-#### License
+## License
 
 "THE BEER-WARE LICENSE" (Revision 42):
 
