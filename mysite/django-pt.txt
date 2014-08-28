@@ -1,0 +1,112 @@
+guia django
+-----------
+
+Isto irá criar o diretório mysite no seu diretório atual.
+django-admin.py startproject mysite
+
+NOTA:
+Você precisará evitar dar nomes a projetos que remetam a componentes internos do Python ou do Django. Particularmente, isso significa que você deve evitar usar nomes como django (que irá conflitar com o próprio Django) ou test (que irá conflitar com um pacote interno do Python).
+
+--
+
+O servidor de desenvolvimento
+-----------------------------
+
+python manage.py runserver.
+
+NOTA:
+Mudando a porta. Por padrão, o comando runserver inicia o servidor de desenvolvimento no IP interno na porta 8000.
+Se você quer mudar a porta do servidor, passe ela como um argumento na linha de comando. Por exemplo, este comando iniciará o servidor na porta 8080:
+python manage.py runserver 8080
+Se você quer mudar o IP do servidor, passe-o junto com a porta. Para então escutar em todos os IPs públicos (útil se você quer mostrar seu trabalho em outros computadores), use:
+python manage.py runserver 0.0.0.0:8000
+A documentação completa para o servidor de desenvolvimento está na referência runserver.
+
+Configuração do banco de dados
+------------------------------
+
+SQLLITE não precisa fazer alterações
+
+NOTA:
+Se você estiver utilizando PostgreSQL ou MySQL, certifique-se de que já tenha criado o banco de dados a partir deste ponto. Faça isso com "CREATE DATABASE database_name;" no prompt interativo do seu banco de dados.
+Se você está utilizando SQLite você não precisa criar nada de antemão - o arquivo do banco de dados será criado automaticamente quando ele for necessário.
+
+python manage.py syncdb
+
+Criando models
+--------------
+python manage.py startapp polls
+
+Ativando os models
+------------------
+
+Edite o arquivo settings.py novamente e altere o valor de INSTALLED_APPS para incluir 'mysite.polls' de modo que se pareça com isso:
+INSTALLED_APPS = (
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'mysite.polls'
+)
+
+Agora o Django sabe que o mysite inclui a aplicação polls. Vamos rodar outro comando:
+python manage.py sql polls
+Você deverá ver algo similar ao seguinte (as instruções SQL CREATE TABLE` para a aplicação de enquetes):
+
+Agora rode o syncdb novamente para criar essas tabelas dos models no seu banco de dados:
+python manage.py syncdb
+
+Brincando com a API
+-------------------
+
+NOTA:
+Por que __unicode__() e não __str__()?
+Se você está familiarizado com o Python, você deve ter o hábito de adicionar métodos __str__() às suas classes, não métodos __unicode__(). Nós usamos __unicode__() aqui porque os models do Django lidam com Unicode por padrão. Todos os dados armazenados nos seus bancos de dados são convertidos para Unicode quando são retornados.
+Os models do Django têm um método padrão __str__() que chama o __unicode__() e converte os resultados para uma bytestring UTF-8. Isso significa que unicode(p) irá retornar uma string Unicode, e que str(p) irá retornar uma string normal, com caracteres codificados como UTF-8.
+Se tudo isso é grego para você, apenas lembre-se de adicionar métodos __unicode__() aos seus models. Com alguma sorte, as coisas deverão simplesmente funcionar para você.
+
+Ative o site de administração do Django
+---------------------------------------
+
+Adicione "django.contrib.admin" às suas configurações de INSTALLED_APPS.
+Execute python manage.py syncdb. Já que uma nova aplicação foi adicionada ao INSTALLED_APPS, as tabelas do banco de dados precisam ser atualizadas.
+
+Edite seu arquivo meusite/urls.py e retire o comentário das linhas abaixo de “Uncomment the next two lines...”. Esse arquivo é um URLconf; entraremos em detalhes sobre URLconfs no próximo tutorial. Por enquanto, tudo o que você tem que saber é que ele mapeia as URLs principais para as aplicações. No final você deve ter um urls.py parecido com este:
+
+from django.conf.urls.defaults import *
+
+# Uncomment the next two lines to enable the admin:
+from django.contrib import admin
+admin.autodiscover()
+
+urlpatterns = patterns('',
+    # Example:
+    # (r'^mysite/', include('mysite.foo.urls')),
+
+    # Uncomment the admin/doc line below and add 'django.contrib.admindocs'
+    # to INSTALLED_APPS to enable admin documentation:
+    # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
+
+    # Uncomment the next line to enable the admin:
+    (r'^admin/(.*)', admin.site.root),
+)
+
+Inicie o servidor de desenvolvimento
+------------------------------------
+
+python manage.py runserver
+
+Entre no site de administração
+------------------------------
+
+http://localhost:8000/admin/
+
+Torne a aplicação de enquetes editável no site de administração
+---------------------------------------------------------------
+
+edite o arquivo chamado admin.py em seu diretório polls
+
+Adicionando objetos relacionados
+--------------------------------
+
+
